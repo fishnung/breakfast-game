@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>六年級開學第一天 · 氣氛雷達與暑假亮點 Check-in</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Tone.js for Web Audio feedback -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'sans-serif'],
+            display: ['"Fredoka"', '"Noto Sans TC"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+            }
+          },
+          animation: {
+            'bounce-soft': 'bounceSoft 2s infinite ease-in-out',
+            'pulse-glow': 'pulseGlow 2.5s infinite ease-in-out',
+          },
+          keyframes: {
+            bounceSoft: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-6px)' }
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.9', transform: 'scale(1)' },
+              '50%': { opacity: '1', transform: 'scale(1.02)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .energy-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #0284c7;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(2, 132, 199, 0.6);
+      border: 3px solid #ffffff;
+      transition: transform 0.15s ease;
+    }
+    .energy-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-slate-100 via-sky-50 to-indigo-100 min-h-screen text-slate-800 antialiased selection:bg-sky-200">
+
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Title & Badge -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-sky-500/20">
+          <i data-lucide="zap" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-lg sm:text-xl text-slate-800 tracking-tight">六年級開學 Check-in</h1>
+            <span class="px-2 py-0.5 text-xs font-semibold bg-indigo-100 text-indigo-700 rounded-full border border-indigo-200">準畢業生模式</span>
+          </div>
+          <p class="text-xs text-slate-500 hidden sm:block">氣氛電量雷達 × 暑假亮點 30 秒快閃分享</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Quick stats summary pill -->
+        <div class="hidden md:flex items-center gap-3 bg-slate-100/90 px-3 py-1.5 rounded-full border border-slate-200 text-xs font-medium">
+          <span class="flex items-center gap-1 text-slate-600">
+            <i data-lucide="users" class="w-3.5 h-3.5 text-sky-500"></i>
+            打卡人數: <span id="header-count" class="font-bold text-slate-800 text-sm">0</span>
+          </span>
+          <span class="w-px h-3 bg-slate-300"></span>
+          <span class="flex items-center gap-1 text-slate-600">
+            <i data-lucide="battery-charging" class="w-3.5 h-3.5 text-amber-500"></i>
+            全班平均電量: <span id="header-avg-energy" class="font-bold text-slate-800 text-sm">0%</span>
+          </span>
+        </div>
+
+        <!-- Mode Toggle Button (Student Check-in vs Teacher Board) -->
+        <div class="flex bg-slate-200/80 p-1 rounded-xl">
+          <button id="tab-btn-checkin" onclick="switchMainTab('checkin')" class="px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition-all bg-white shadow text-sky-700">
+            <i data-lucide="edit-3" class="w-4 h-4 inline-block mr-1"></i>打卡填寫
+          </button>
+          <button id="tab-btn-board" onclick="switchMainTab('board')" class="px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900">
+            <i data-lucide="presentation" class="w-4 h-4 inline-block mr-1"></i>全班看板
+          </button>
+        </div>
+
+        <!-- Audio mute/unmute -->
+        <button id="audio-toggle" onclick="toggleAudio()" class="p-2 text-slate-500 hover:text-sky-600 rounded-lg hover:bg-slate-100 transition-colors" title="音效開關">
+          <i data-lucide="volume-2" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Demo Generator & Reset -->
+        <button onclick="openDemoModal()" class="px-3 py-1.5 text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg border border-indigo-200 transition-all flex items-center gap-1">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">示範名單</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- VIEW 1: STUDENT CHECK-IN FORM -->
+    <section id="view-checkin" class="grid grid-cols-1 lg:grid-cols-12 gap-6 transition-all duration-300">
+      
+      <!-- Left: Check-in Card Form -->
+      <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 border border-slate-200/80 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-44 h-44 bg-sky-100 rounded-full blur-3xl opacity-70 pointer-events-none"></div>
+
+        <div class="mb-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-800 mb-2">
+            <i data-lucide="compass" class="w-3.5 h-3.5"></i> Step 1. 登記你的開學狀態
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">嗨，六年級的學長姐！</h2>
+          <p class="text-sm text-slate-500 mt-1">今天是你身為國小最高年級的第一天，花 1 分鐘讓老師與同學了解你的電量！</p>
+        </div>
+
+        <form id="checkin-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+          <!-- Identity Info -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <i data-lucide="user" class="w-4 h-4 text-sky-500"></i> 你的座號 / 姓名
+              </label>
+              <input type="text" id="input-name" required placeholder="例如：07 冠宇 或 依婷" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition text-sm font-medium bg-slate-50/50 focus:bg-white" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <i data-lucide="smile" class="w-4 h-4 text-amber-500"></i> 代表心情 Emoji
+              </label>
+              <div class="flex gap-2">
+                <select id="input-emoji" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition text-sm font-medium bg-slate-50/50 focus:bg-white">
+                  <option value="😎">😎 超級帥氣 / 準備好了</option>
+                  <option value="🥱">🥱 還在放假模式 / 想睡覺</option>
+                  <option value="🔥">🔥 熱血沸騰 / 想拼第一</option>
+                  <option value="🎉">🎉 開心見到大家！</option>
+                  <option value="🥺">🥺 有點焦慮 / 怕功課變難</option>
+                  <option value="🚀">🚀 期待畢業旅行與畢業！</option>
+                  <option value="🤔">🤔 佛系觀察中</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Energy Slider -->
+          <div class="bg-gradient-to-r from-sky-50 via-indigo-50/60 to-purple-50 p-5 rounded-2xl border border-sky-100">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                <i data-lucide="battery-charging" class="w-4 h-4 text-sky-600"></i>
+                今日開學電量 (<span id="slider-val-text" class="text-sky-600 font-extrabold text-base">75%</span>)
+              </label>
+              <span id="energy-badge" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-700">⚡ 充好電了</span>
+            </div>
+
+            <!-- Interactive Slider Bar -->
+            <input 
+              type="range" 
+              id="input-energy" 
+              min="0" 
+              max="100" 
+              value="75" 
+              oninput="updateEnergyVisual(this.value)"
+              class="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer energy-slider transition" 
+            />
+
+            <!-- Battery Scale Reference -->
+            <div class="flex justify-between text-[11px] font-semibold text-slate-400 mt-2 px-1">
+              <span>0% 沒電關機</span>
+              <span>25% 掙扎起床</span>
+              <span>50% 普通開機</span>
+              <span>75% 充滿朝氣</span>
+              <span>100% 戰力破表</span>
+            </div>
+
+            <p id="energy-hint" class="text-xs text-slate-600 mt-3 italic font-medium bg-white/70 p-2.5 rounded-lg border border-slate-200/60 flex items-center gap-1.5">
+              <i data-lucide="info" class="w-3.5 h-3.5 text-sky-500 shrink-0"></i>
+              <span>狀態描述：狀態良好，作息已調整就緒，對六年級的新生活充滿期待！</span>
+            </p>
+          </div>
+
+          <!-- 3-in-1 Highlight Selection -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-4 h-4 text-purple-500"></i> 三選一快速亮點分享 (擇一填寫)
+            </label>
+
+            <!-- Category Radio Pills -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3">
+              <label class="cursor-pointer border border-slate-200 rounded-xl p-3 flex flex-col items-center text-center transition hover:border-sky-400 has-[:checked]:bg-sky-50 has-[:checked]:border-sky-500 has-[:checked]:ring-1 has-[:checked]:ring-sky-500">
+                <input type="radio" name="highlight_type" value="summer" checked onchange="updateHighlightPlaceholder()" class="sr-only">
+                <span class="text-xl mb-1">🌊</span>
+                <span class="text-xs font-bold text-slate-800">暑假最酷的事</span>
+                <span class="text-[10px] text-slate-400 mt-0.5">旅遊/破關/新技能</span>
+              </label>
+
+              <label class="cursor-pointer border border-slate-200 rounded-xl p-3 flex flex-col items-center text-center transition hover:border-emerald-400 has-[:checked]:bg-emerald-50 has-[:checked]:border-emerald-500 has-[:checked]:ring-1 has-[:checked]:ring-emerald-500">
+                <input type="radio" name="highlight_type" value="expect" onchange="updateHighlightPlaceholder()" class="sr-only">
+                <span class="text-xl mb-1">🎯</span>
+                <span class="text-xs font-bold text-slate-800">開學最期待</span>
+                <span class="text-[10px] text-slate-400 mt-0.5">畢旅/社團/新幹部</span>
+              </label>
+
+              <label class="cursor-pointer border border-slate-200 rounded-xl p-3 flex flex-col items-center text-center transition hover:border-amber-400 has-[:checked]:bg-amber-50 has-[:checked]:border-amber-500 has-[:checked]:ring-1 has-[:checked]:ring-amber-500">
+                <input type="radio" name="highlight_type" value="worry" onchange="updateHighlightPlaceholder()" class="sr-only">
+                <span class="text-xl mb-1">💭</span>
+                <span class="text-xs font-bold text-slate-800">最擔心 / 需支援</span>
+                <span class="text-[10px] text-slate-400 mt-0.5">課業難度/早起/分組</span>
+              </label>
+            </div>
+
+            <!-- Content input -->
+            <textarea 
+              id="input-content" 
+              required 
+              rows="3" 
+              placeholder="分享一下吧！例如：暑假自己搭火車去花蓮玩、終於把《薩爾達傳說》全破關了！"
+              class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition text-sm font-medium bg-slate-50/50 focus:bg-white resize-none"
+            ></textarea>
+          </div>
+
+          <button 
+            type="submit" 
+            class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-sky-500 via-indigo-600 to-purple-600 hover:from-sky-600 hover:to-purple-700 text-white font-bold text-base shadow-lg shadow-sky-500/25 active:scale-[0.99] transition-all flex items-center justify-center gap-2 group"
+          >
+            <i data-lucide="send" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+            <span>完成打卡！登錄氣氛雷達</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Right: Live Real-time Status Card & Mini Stream -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <!-- Live Class Energy Radar Box -->
+        <div class="bg-white rounded-3xl p-6 shadow-xl shadow-slate-200/50 border border-slate-200/80">
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div>
+              <h3 class="font-bold text-slate-800 flex items-center gap-1.5">
+                <i data-lucide="activity" class="w-4 h-4 text-sky-500"></i>
+                即時氣氛雷達動態
+              </h3>
+              <p class="text-xs text-slate-400">目前已有 <span id="side-count" class="font-bold text-sky-600">0</span> 位同學登入</p>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center font-black text-base border border-sky-100">
+              <span id="side-avg-val">0%</span>
+            </div>
+          </div>
+
+          <!-- Visual Energy Distribution Bar Breakdown -->
+          <div class="mt-4 space-y-3">
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span> 戰力破表 (80-100%)</span>
+                <span id="count-tier-super" class="text-purple-600 font-bold">0 人</span>
+              </div>
+              <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div id="bar-tier-super" class="bg-gradient-to-r from-purple-500 to-indigo-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> 精神充沛 (60-79%)</span>
+                <span id="count-tier-high" class="text-emerald-600 font-bold">0 人</span>
+              </div>
+              <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div id="bar-tier-high" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> 平靜暖機 (30-59%)</span>
+                <span id="count-tier-mid" class="text-amber-600 font-bold">0 人</span>
+              </div>
+              <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div id="bar-tier-mid" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> 需要急救 (0-29%)</span>
+                <span id="count-tier-low" class="text-rose-600 font-bold">0 人</span>
+              </div>
+              <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div id="bar-tier-low" class="bg-rose-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="teacher-quick-advice" class="mt-5 p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-100 text-xs text-indigo-900 leading-relaxed flex items-start gap-2.5">
+            <i data-lucide="lightbulb" class="w-4 h-4 text-indigo-600 shrink-0 mt-0.5"></i>
+            <div>
+              <p class="font-bold">導師觀察提示：</p>
+              <p id="advice-text" class="text-indigo-800/90 mt-0.5">尚無資料，請同學們開始打卡！</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Latest Check-ins Stream Preview -->
+        <div class="bg-white rounded-3xl p-6 shadow-xl shadow-slate-200/50 border border-slate-200/80 flex flex-col h-[320px]">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+              <i data-lucide="message-square" class="w-4 h-4 text-indigo-500"></i>
+              最新打卡動態
+            </h3>
+            <button onclick="switchMainTab('board')" class="text-xs font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-0.5">
+              前往全班看板 <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+          <div id="latest-stream-list" class="flex-1 overflow-y-auto space-y-2 pr-1 text-xs">
+            <!-- Dynamic items rendered here -->
+            <div class="text-center py-12 text-slate-400">
+              <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-40"></i>
+              <p>等待第一位同學打卡中...</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 2: FULL CLASS BOARD -->
+    <section id="view-board" class="hidden space-y-6 transition-all duration-300">
+      
+      <!-- Top Feature Bar: Filter Tabs & Teacher Toolbox -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap items-center gap-1.5" id="filter-container">
+          <button onclick="setFilter('all')" data-filter="all" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-900 text-white shadow">
+            全部亮點 (<span id="filter-count-all">0</span>)
+          </button>
+          <button onclick="setFilter('summer')" data-filter="summer" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200">
+            🌊 暑假最酷 (<span id="filter-count-summer">0</span>)
+          </button>
+          <button onclick="setFilter('expect')" data-filter="expect" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200">
+            🎯 開學最期待 (<span id="filter-count-expect">0</span>)
+          </button>
+          <button onclick="setFilter('worry')" data-filter="worry" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200">
+            💭 最擔心/需支援 (<span id="filter-count-worry">0</span>)
+          </button>
+        </div>
+
+        <!-- Teacher Interactive Tools (Lucky Picker + 30s Timer) -->
+        <div class="flex items-center gap-2">
+          <button onclick="openRandomPickerModal()" class="px-3.5 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-bold rounded-xl shadow-md shadow-orange-500/20 flex items-center gap-1.5 active:scale-95 transition">
+            <i data-lucide="shuffle" class="w-4 h-4"></i>
+            <span>隨機抽籤分享！</span>
+          </button>
+          <button onclick="openTimerModal()" class="px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold rounded-xl shadow-md shadow-teal-500/20 flex items-center gap-1.5 active:scale-95 transition">
+            <i data-lucide="timer" class="w-4 h-4"></i>
+            <span>30秒限時計時器</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Student Cards Grid -->
+      <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Rendered by JavaScript -->
+      </div>
+
+      <!-- Empty State for Board -->
+      <div id="cards-empty" class="hidden bg-white rounded-3xl p-12 text-center border border-slate-200">
+        <div class="w-16 h-16 bg-sky-100 text-sky-600 rounded-full flex items-center justify-center mx-auto mb-3">
+          <i data-lucide="clipboard-list" class="w-8 h-8"></i>
+        </div>
+        <h3 class="text-lg font-bold text-slate-800">目前沒有符合條件的打卡資料</h3>
+        <p class="text-sm text-slate-500 mt-1">請切換篩選分類，或點擊右上角「示範名單」快速預覽！</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 1. Random Picker Modal -->
+  <div id="picker-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl text-center relative animate-pulse-glow">
+      <button onclick="closeModal('picker-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <i data-lucide="dices" class="w-8 h-8"></i>
+      </div>
+      <h3 class="text-xl font-black text-slate-800">幸運星快閃點名</h3>
+      <p class="text-xs text-slate-500 mt-1">抽取一位同學進行 30 秒開學亮點分享！</p>
+
+      <!-- Slot Machine / Name Roller -->
+      <div class="my-6 p-6 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-amber-200">
+        <div id="picker-slot-emoji" class="text-5xl mb-2 animate-bounce-soft">🎲</div>
+        <div id="picker-slot-name" class="text-2xl font-black text-amber-900 tracking-wide">準備好了嗎？</div>
+        <div id="picker-slot-detail" class="text-xs font-semibold text-amber-700 mt-2 min-h-[36px] flex items-center justify-center px-2">
+          點擊下方按鈕開始抽籤！
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button id="picker-start-btn" onclick="startRandomPickerRoll()" class="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm shadow-md transition active:scale-95">
+          開始抽籤！
+        </button>
+        <button id="picker-timer-btn" onclick="startTimerForPickedStudent()" class="hidden flex-1 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition active:scale-95">
+          啟動 30 秒分享 ⏱️
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 30-Second Stage Countdown Timer Modal with Live Prompter -->
+  <div id="timer-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl text-center relative border border-slate-100">
+      <button onclick="closeModal('timer-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 mb-2">
+        <i data-lucide="mic" class="w-3.5 h-3.5"></i> 30 秒快閃麥克風 · 舞台時間
+      </div>
+      
+      <!-- Speaker Info Header -->
+      <div class="flex items-center justify-center gap-2 mb-3">
+        <span id="timer-speaker-emoji" class="text-3xl">🎤</span>
+        <h3 id="timer-speaker-title" class="text-xl sm:text-2xl font-black text-slate-800">同學分享時間</h3>
+      </div>
+
+      <!-- Live Student Content Prompter (Cheat sheet so they won't forget) -->
+      <div id="timer-prompter-box" class="mb-5 text-left bg-gradient-to-br from-slate-50 to-sky-50/50 p-4 rounded-2xl border-2 border-sky-200/70 shadow-inner">
+        <div class="flex items-center justify-between gap-2 mb-1.5">
+          <span id="timer-prompter-type" class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-700">
+            🌊 暑假最酷的事
+          </span>
+          <span id="timer-prompter-energy" class="text-xs font-bold text-slate-500">
+            ⚡ 電量: 80%
+          </span>
+        </div>
+        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+          <i data-lucide="file-text" class="w-3 h-3 text-sky-500"></i> 打卡備忘小抄（不怕忘詞！）：
+        </div>
+        <p id="timer-prompter-text" class="text-slate-800 font-bold text-sm sm:text-base leading-relaxed bg-white/90 p-3 rounded-xl border border-sky-100">
+          「載入中...」
+        </p>
+      </div>
+      
+      <!-- Big circular / digital countdown timer -->
+      <div class="my-4 relative flex items-center justify-center">
+        <div class="w-36 h-36 sm:w-40 sm:h-40 rounded-full border-8 border-slate-100 flex flex-col items-center justify-center relative shadow-inner">
+          <span id="timer-display" class="font-display font-black text-5xl sm:text-6xl text-slate-800">30</span>
+          <span class="text-[10px] sm:text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">SECONDS</span>
+          <!-- Circular SVG Progress -->
+          <svg class="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="8" fill="none" class="text-transparent" />
+            <circle id="timer-svg-circle" cx="50" cy="50" r="44" stroke="currentColor" stroke-width="8" fill="none" stroke-dasharray="276.46" stroke-dashoffset="0" stroke-linecap="round" class="text-emerald-500 transition-all duration-300" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Timer Control Actions -->
+      <div class="flex justify-center items-center gap-3">
+        <button onclick="toggleTimerRunning()" id="timer-toggle-btn" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition flex items-center gap-1.5 active:scale-95">
+          <i data-lucide="play" class="w-4 h-4"></i> <span id="timer-btn-label">開始倒數</span>
+        </button>
+        <button onclick="resetTimer(30)" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition active:scale-95">
+          重設 30s
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Demo Data Modal -->
+  <div id="demo-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl text-left relative">
+      <button onclick="closeModal('demo-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mb-3">
+        <i data-lucide="sparkles" class="w-6 h-6"></i>
+      </div>
+      <h3 class="text-lg font-black text-slate-800">示範資料管理</h3>
+      <p class="text-xs text-slate-500 mt-1">方便開學第一天現場示範！包含 8 位六年級學生的模擬打卡數據。</p>
+
+      <div class="my-4 p-3 bg-slate-50 rounded-xl text-xs text-slate-600 space-y-1">
+        <p>✨ 涵蓋高電量、想睡覺、熱血、擔心課業等多元真實反應。</p>
+        <p>✨ 自動更新平均電量、分類標籤與抽籤名單。</p>
+      </div>
+
+      <div class="flex gap-2">
+        <button onclick="loadDemoDataset()" class="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow transition">
+          一鍵載入示範資料
+        </button>
+        <button onclick="clearAllData()" class="px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs border border-rose-200 transition">
+          清空所有
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-medium">
+    <span id="toast-icon" class="text-lg">🎉</span>
+    <span id="toast-msg">打卡成功！</span>
+  </div>
+
+  <script>
+    // Global Application State
+    let students = [];
+    let currentFilter = 'all';
+    let audioEnabled = true;
+    let synth = null;
+    let timerInterval = null;
+    let timeLeft = 30;
+    let timerTotal = 30;
+    let isTimerRunning = false;
+    let selectedStudent = null;
+    let pickerInterval = null;
+
+    // Representative Grade 6 Demo Dataset
+    const DEMO_STUDENTS = [
+      { id: '1', name: '01 柏翰', emoji: '🔥', energy: 95, type: 'expect', content: '小學最後一年，超期待畢業旅行！我一定要跟好哥們睡同一間房間！', hearts: 8, userLiked: false },
+      { id: '2', name: '05 依婷', emoji: '😎', energy: 80, type: 'summer', content: '暑假跟家人去沖繩浮潛，還看到海龜！整個暑假過得超充實。', hearts: 14, userLiked: false },
+      { id: '3', name: '12 宇辰', emoji: '🥱', energy: 35, type: 'worry', content: '放假每天睡到 11 點，今天早上 6:30 起床好痛苦，靈魂還在被窩裡...', hearts: 19, userLiked: false },
+      { id: '4', name: '18 子晴', emoji: '🥺', energy: 50, type: 'worry', content: '聽說六年級數學的「速率」跟「圓形面積」很難，有點擔心跟不上。', hearts: 6, userLiked: false },
+      { id: '5', name: '22 冠宇', emoji: '🚀', energy: 90, type: 'expect', content: '想爭取當班長或體育股長，這學期想在運動會大隊接力為班上拿冠軍！', hearts: 11, userLiked: false },
+      { id: '6', name: '08 語彤', emoji: '🎉', energy: 85, type: 'summer', content: '暑假讀完了全套《哈利波特》小說，還自己學會了做千層巴斯克蛋糕！', hearts: 9, userLiked: false },
+      { id: '7', name: '14 俊傑', emoji: '🤔', energy: 60, type: 'summer', content: '在 Roblox 上自己設計了一款生存遊戲，竟然有超過 200 個人玩過！', hearts: 18, userLiked: false },
+      { id: '8', name: '27 芯妤', emoji: '😎', energy: 75, type: 'expect', content: '期待這學期的園遊會擺攤，我們要成為全校賺最多班費的班級！', hearts: 7, userLiked: false }
+    ];
+
+    function initAudio() {
+      if (!synth && typeof Tone !== 'undefined') {
+        synth = new Tone.PolySynth(Tone.Synth, {
+          oscillator: { type: "triangle" },
+          envelope: { attack: 0.02, decay: 0.1, sustain: 0.2, release: 0.8 }
+        }).toDestination();
+        synth.volume.value = -8;
+      }
+    }
+
+    function playSound(type) {
+      if (!audioEnabled) return;
+      try {
+        initAudio();
+        Tone.start();
+        if (type === 'submit') {
+          synth.triggerAttackRelease(["C5", "E5", "G5", "C6"], "0.15");
+        } else if (type === 'tick') {
+          synth.triggerAttackRelease("A5", "0.05");
+        } else if (type === 'celebrate') {
+          synth.triggerAttackRelease(["F5", "A5", "C6", "F6"], "0.3");
+        } else if (type === 'roll') {
+          synth.triggerAttackRelease("E5", "0.04");
+        }
+      } catch (e) {
+        console.warn("Audio feedback error", e);
+      }
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const btn = document.getElementById('audio-toggle');
+      if (audioEnabled) {
+        btn.innerHTML = '<i data-lucide="volume-2" class="w-5 h-5 text-sky-600"></i>';
+        showToast('🔊 音效已開啟', '🎶');
+      } else {
+        btn.innerHTML = '<i data-lucide="volume-x" class="w-5 h-5 text-slate-400"></i>';
+        showToast('🔇 音效已靜音', '🔕');
+      }
+      lucide.createIcons();
+    }
+
+    function updateEnergyVisual(val) {
+      const num = parseInt(val, 10);
+      document.getElementById('slider-val-text').textContent = num + '%';
+      
+      const badge = document.getElementById('energy-badge');
+      const hint = document.getElementById('energy-hint');
+      let badgeText = '';
+      let badgeClass = '';
+      let hintText = '';
+
+      if (num >= 85) {
+        badgeText = '🔥 戰力破表';
+        badgeClass = 'bg-purple-100 text-purple-700';
+        hintText = '精神絕佳！小學最高年級的氣勢已經點燃，隨時準備大顯身手！';
+      } else if (num >= 65) {
+        badgeText = '⚡ 充好電了';
+        badgeClass = 'bg-emerald-100 text-emerald-700';
+        hintText = '狀態良好，作息已調整就緒，對六年級的新生活充滿期待！';
+      } else if (num >= 40) {
+        badgeText = '⛅ 慢慢暖機';
+        badgeClass = 'bg-amber-100 text-amber-700';
+        hintText = '開機中，雖然需要一點時間進入狀況，但今天能順利抵達教室就很棒！';
+      } else {
+        badgeText = '🪫 靈魂放假中';
+        badgeClass = 'bg-rose-100 text-rose-700';
+        hintText = '電量偏低，可能昨晚興奮睡不著或還沒調適，老師今天會多給你一些支援！';
+      }
+
+      badge.className = `px-2.5 py-0.5 rounded-full text-xs font-extrabold ${badgeClass}`;
+      badge.textContent = badgeText;
+      hint.querySelector('span').textContent = '狀態描述：' + hintText;
+    }
+
+    function updateHighlightPlaceholder() {
+      const selected = document.querySelector('input[name="highlight_type"]:checked').value;
+      const textarea = document.getElementById('input-content');
+      if (selected === 'summer') {
+        textarea.placeholder = '分享暑假最酷的事！例如：學會做甜點、自己搭車出遊、打遊戲升到最高段位...';
+      } else if (selected === 'expect') {
+        textarea.placeholder = '分享六年級最期待的事！例如：畢業旅行、自治市幹部選舉、跟誰當好朋友...';
+      } else {
+        textarea.placeholder = '分享讓你擔心或希望老師支援的事！例如：擔心數學變難、早起很睏、想被分配到好組別...';
+      }
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('input-name').value.trim();
+      const emoji = document.getElementById('input-emoji').value;
+      const energy = parseInt(document.getElementById('input-energy').value, 10);
+      const type = document.querySelector('input[name="highlight_type"]:checked').value;
+      const content = document.getElementById('input-content').value.trim();
+
+      if (!name || !content) return;
+
+      const newStudent = {
+        id: Date.now().toString(),
+        name,
+        emoji,
+        energy,
+        type,
+        content,
+        hearts: 0,
+        userLiked: false
+      };
+
+      students.unshift(newStudent);
+      renderAll();
+
+      // Confetti effect
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.8 }
+      });
+      playSound('submit');
+      showToast(`🎉 ${name} 打卡成功！電量 ${energy}%`, emoji);
+
+      // Reset text fields
+      document.getElementById('input-name').value = '';
+      document.getElementById('input-content').value = '';
+      document.getElementById('input-energy').value = '75';
+      updateEnergyVisual(75);
+    }
+
+    function calculateAnalytics() {
+      const total = students.length;
+      if (total === 0) {
+        return {
+          total: 0,
+          avgEnergy: 0,
+          superTier: 0,
+          highTier: 0,
+          midTier: 0,
+          lowTier: 0,
+          advice: '尚無資料，請同學們開始打卡！'
+        };
+      }
+
+      let sum = 0;
+      let sTier = 0, hTier = 0, mTier = 0, lTier = 0;
+
+      students.forEach(s => {
+        sum += s.energy;
+        if (s.energy >= 80) sTier++;
+        else if (s.energy >= 60) hTier++;
+        else if (s.energy >= 30) mTier++;
+        else lTier++;
+      });
+
+      const avg = Math.round(sum / total);
+
+      let advice = '';
+      if (avg >= 75) {
+        advice = `全班氣氛高昂 (平均 ${avg}%)！很適合在第一天進行班級幹部認領與小組破冰目標。`;
+      } else if (avg >= 50) {
+        advice = `整體狀態平穩 (平均 ${avg}%)，有 ${lTier} 位同學電量偏低，第一天適合節奏輕鬆、多點歡笑。`;
+      } else {
+        advice = `全班電力充電中 (平均 ${avg}%)，建議減少生硬規矩宣導，多用 30 秒快閃亮點帶起氣氛！`;
+      }
+
+      return {
+        total,
+        avgEnergy: avg,
+        superTier: sTier,
+        highTier: hTier,
+        midTier: mTier,
+        lowTier: lTier,
+        advice
+      };
+    }
+
+    function renderAll() {
+      const stats = calculateAnalytics();
+
+      // Update Header & Side Stats
+      document.getElementById('header-count').textContent = stats.total;
+      document.getElementById('header-avg-energy').textContent = stats.avgEnergy + '%';
+      document.getElementById('side-count').textContent = stats.total;
+      document.getElementById('side-avg-val').textContent = stats.avgEnergy + '%';
+
+      // Update Bars
+      const toPct = (count) => stats.total > 0 ? ((count / stats.total) * 100).toFixed(0) + '%' : '0%';
+      document.getElementById('count-tier-super').textContent = `${stats.superTier} 人 (${toPct(stats.superTier)})`;
+      document.getElementById('bar-tier-super').style.width = toPct(stats.superTier);
+
+      document.getElementById('count-tier-high').textContent = `${stats.highTier} 人 (${toPct(stats.highTier)})`;
+      document.getElementById('bar-tier-high').style.width = toPct(stats.highTier);
+
+      document.getElementById('count-tier-mid').textContent = `${stats.midTier} 人 (${toPct(stats.midTier)})`;
+      document.getElementById('bar-tier-mid').style.width = toPct(stats.midTier);
+
+      document.getElementById('count-tier-low').textContent = `${stats.lowTier} 人 (${toPct(stats.lowTier)})`;
+      document.getElementById('bar-tier-low').style.width = toPct(stats.lowTier);
+
+      document.getElementById('advice-text').textContent = stats.advice;
+
+      // Update Filter counts
+      document.getElementById('filter-count-all').textContent = students.length;
+      document.getElementById('filter-count-summer').textContent = students.filter(s => s.type === 'summer').length;
+      document.getElementById('filter-count-expect').textContent = students.filter(s => s.type === 'expect').length;
+      document.getElementById('filter-count-worry').textContent = students.filter(s => s.type === 'worry').length;
+
+      // Render Mini Stream List on check-in panel
+      renderMiniStream();
+
+      // Render Big Board Cards
+      renderBoardCards();
+    }
+
+    function renderMiniStream() {
+      const streamList = document.getElementById('latest-stream-list');
+      if (students.length === 0) {
+        streamList.innerHTML = `
+          <div class="text-center py-12 text-slate-400">
+            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-40"></i>
+            <p>等待第一位同學打卡中...</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      streamList.innerHTML = students.slice(0, 6).map(s => {
+        return `
+          <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-2.5">
+            <span class="text-xl">${s.emoji}</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1">
+                <span class="font-bold text-slate-800 truncate">${s.name}</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.2 rounded ${s.energy >= 70 ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${s.energy}% 電</span>
+              </div>
+              <p class="text-slate-600 truncate mt-0.5">${s.content}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderBoardCards() {
+      const grid = document.getElementById('cards-grid');
+      const emptyState = document.getElementById('cards-empty');
+
+      const filtered = currentFilter === 'all' 
+        ? students 
+        : students.filter(s => s.type === currentFilter);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      grid.innerHTML = filtered.map(s => {
+        let typeName = '🌊 暑假最酷的事';
+        if (s.type === 'expect') {
+          typeName = '🎯 開學最期待';
+        } else if (s.type === 'worry') {
+          typeName = '💭 最擔心 / 需支援';
+        }
+
+        const isLiked = s.userLiked === true;
+
+        return `
+          <div class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md border border-slate-200/80 transition-all flex flex-col justify-between relative group overflow-hidden">
+            <!-- Energy color strip -->
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${s.energy >= 80 ? 'from-purple-500 to-indigo-500' : s.energy >= 50 ? 'from-emerald-400 to-sky-400' : 'from-amber-400 to-rose-400'}"></div>
+
+            <div>
+              <!-- Header with avatar, name & energy -->
+              <div class="flex items-start justify-between gap-2 mb-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-2xl shadow-inner">
+                    ${s.emoji}
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-800 text-base leading-tight">${s.name}</h4>
+                    <span class="text-[11px] font-semibold text-slate-400">${typeName}</span>
+                  </div>
+                </div>
+
+                <!-- Energy pill -->
+                <div class="flex flex-col items-end">
+                  <span class="px-2 py-0.5 rounded-full text-xs font-black ${s.energy >= 80 ? 'bg-purple-100 text-purple-700' : s.energy >= 50 ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+                    ⚡ ${s.energy}%
+                  </span>
+                </div>
+              </div>
+
+              <!-- Content body -->
+              <p class="text-slate-700 text-sm font-medium leading-relaxed my-2 bg-slate-50/70 p-3 rounded-xl border border-slate-100">
+                "${s.content}"
+              </p>
+            </div>
+
+            <!-- Footer: Single Heart Like (Only once) & 30s Prompter Launcher -->
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between mt-2">
+              <div>
+                <button 
+                  onclick="toggleHeart('${s.id}')" 
+                  class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 active:scale-90 ${
+                    isLiked 
+                      ? 'bg-rose-500 text-white shadow-sm shadow-rose-500/30' 
+                      : 'bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600'
+                  }"
+                  title="${isLiked ? '已按讚愛心（點擊收回）' : '點擊送出愛心'}"
+                >
+                  <span class="${isLiked ? 'scale-110' : ''} transition-transform">❤️</span>
+                  <span class="font-black">${s.hearts || 0}</span>
+                </button>
+              </div>
+
+              <!-- Microphone button to start 30s countdown with this student's prompter card -->
+              <button 
+                onclick="startSharingById('${s.id}')" 
+                class="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-sm border border-emerald-200" 
+                title="帶小抄啟動 30 秒快閃分享"
+              >
+                <i data-lucide="mic" class="w-3.5 h-3.5 text-emerald-600"></i>
+                <span>30s 分享</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function switchMainTab(tab) {
+      const checkinView = document.getElementById('view-checkin');
+      const boardView = document.getElementById('view-board');
+      const btnCheckin = document.getElementById('tab-btn-checkin');
+      const btnBoard = document.getElementById('tab-btn-board');
+
+      if (tab === 'checkin') {
+        checkinView.classList.remove('hidden');
+        boardView.classList.add('hidden');
+        btnCheckin.className = "px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition-all bg-white shadow text-sky-700";
+        btnBoard.className = "px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900";
+      } else {
+        checkinView.classList.add('hidden');
+        boardView.classList.remove('hidden');
+        btnBoard.className = "px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition-all bg-white shadow text-sky-700";
+        btnCheckin.className = "px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900";
+      }
+      lucide.createIcons();
+    }
+
+    function setFilter(filterType) {
+      currentFilter = filterType;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.filter === filterType) {
+          btn.className = "filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-900 text-white shadow";
+        } else {
+          btn.className = "filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200";
+        }
+      });
+      renderBoardCards();
+    }
+
+    function toggleHeart(id) {
+      const target = students.find(s => s.id === id);
+      if (!target) return;
+
+      if (!target.userLiked) {
+        target.hearts = (target.hearts || 0) + 1;
+        target.userLiked = true;
+        playSound('tick');
+        showToast(`已為 ${target.name} 送上愛心！❤️`, '❤️');
+      } else {
+        target.hearts = Math.max(0, (target.hearts || 1) - 1);
+        target.userLiked = false;
+        showToast(`已收回給 ${target.name} 的愛心`, '🤍');
+      }
+      renderBoardCards();
+    }
+
+    function openRandomPickerModal() {
+      if (students.length === 0) {
+        showToast('目前尚無學生打卡，請先載入示範名單或打卡！', '⚠️');
+        return;
+      }
+      document.getElementById('picker-start-btn').classList.remove('hidden');
+      document.getElementById('picker-timer-btn').classList.add('hidden');
+      document.getElementById('picker-slot-emoji').textContent = '🎲';
+      document.getElementById('picker-slot-name').textContent = '準備好了嗎？';
+      document.getElementById('picker-slot-detail').textContent = `共有 ${students.length} 位同學在名單中`;
+      openModal('picker-modal');
+    }
+
+    function startRandomPickerRoll() {
+      if (students.length === 0) return;
+      const startBtn = document.getElementById('picker-start-btn');
+      const timerBtn = document.getElementById('picker-timer-btn');
+      startBtn.disabled = true;
+      startBtn.classList.add('opacity-50');
+
+      let counter = 0;
+      const totalTicks = 24;
+      
+      pickerInterval = setInterval(() => {
+        const randomIndex = Math.floor(Math.random() * students.length);
+        const cand = students[randomIndex];
+        document.getElementById('picker-slot-emoji').textContent = cand.emoji;
+        document.getElementById('picker-slot-name').textContent = cand.name;
+        document.getElementById('picker-slot-detail').textContent = `電量：${cand.energy}% · "${cand.content.substring(0, 16)}..."`;
+        playSound('roll');
+        counter++;
+
+        if (counter >= totalTicks) {
+          clearInterval(pickerInterval);
+          selectedStudent = cand;
+          startBtn.disabled = false;
+          startBtn.classList.remove('opacity-50');
+          startBtn.classList.add('hidden');
+          timerBtn.classList.remove('hidden');
+          playSound('celebrate');
+          confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 } });
+        }
+      }, 90);
+    }
+
+    function startTimerForPickedStudent() {
+      closeModal('picker-modal');
+      if (selectedStudent) {
+        startSharingWithStudentObject(selectedStudent);
+      } else {
+        openTimerModal();
+      }
+    }
+
+    function startSharingById(studentId) {
+      const target = students.find(s => s.id === studentId);
+      if (target) {
+        startSharingWithStudentObject(target);
+      }
+    }
+
+    function startSharingWithStudentObject(student) {
+      selectedStudent = student;
+      
+      // Update Prompter text & details so the student doesn't forget
+      document.getElementById('timer-speaker-emoji').textContent = student.emoji;
+      document.getElementById('timer-speaker-title').textContent = `${student.name} 的快閃時間`;
+      
+      let typeLabel = '🌊 暑假最酷的事';
+      if (student.type === 'expect') typeLabel = '🎯 開學最期待';
+      else if (student.type === 'worry') typeLabel = '💭 最擔心 / 需支援';
+      
+      document.getElementById('timer-prompter-type').textContent = typeLabel;
+      document.getElementById('timer-prompter-energy').textContent = `⚡ 今日電量: ${student.energy}%`;
+      document.getElementById('timer-prompter-text').textContent = `「${student.content}」`;
+
+      openTimerModal();
+      resetTimer(30);
+      toggleTimerRunning(); // auto start countdown
+    }
+
+    function openTimerModal() {
+      // If opened manually without a specific student selected
+      if (!selectedStudent && students.length > 0) {
+        startSharingWithStudentObject(students[0]);
+        return;
+      } else if (!selectedStudent) {
+        document.getElementById('timer-speaker-emoji').textContent = '🎤';
+        document.getElementById('timer-speaker-title').textContent = '30 秒快閃分享';
+        document.getElementById('timer-prompter-type').textContent = '💬 自由發言';
+        document.getElementById('timer-prompter-energy').textContent = '⚡ 自由電量';
+        document.getElementById('timer-prompter-text').textContent = '「放輕鬆！跟全班分享一件你開學最想說的話吧！」';
+      }
+      openModal('timer-modal');
+      resetTimer(30);
+    }
+
+    function resetTimer(seconds) {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      timerTotal = seconds;
+      timeLeft = seconds;
+      updateTimerDisplay();
+      const btn = document.getElementById('timer-toggle-btn');
+      btn.className = "px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition flex items-center gap-1.5";
+      document.getElementById('timer-btn-label').textContent = "開始倒數";
+      lucide.createIcons();
+    }
+
+    function toggleTimerRunning() {
+      if (isTimerRunning) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        document.getElementById('timer-btn-label').textContent = "繼續倒數";
+        document.getElementById('timer-toggle-btn').className = "px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm shadow-md transition flex items-center gap-1.5";
+      } else {
+        if (timeLeft <= 0) resetTimer(30);
+        isTimerRunning = true;
+        document.getElementById('timer-btn-label').textContent = "暫停";
+        document.getElementById('timer-toggle-btn').className = "px-6 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white font-bold text-sm shadow-md transition flex items-center gap-1.5";
+        
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          updateTimerDisplay();
+          if (timeLeft > 0 && timeLeft <= 5) {
+            playSound('tick');
+          }
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            playSound('celebrate');
+            confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+            document.getElementById('timer-btn-label').textContent = "時間到！太棒了！";
+            document.getElementById('timer-toggle-btn').className = "px-6 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm";
+          }
+        }, 1000);
+      }
+      lucide.createIcons();
+    }
+
+    function updateTimerDisplay() {
+      document.getElementById('timer-display').textContent = timeLeft;
+      const circle = document.getElementById('timer-svg-circle');
+      const perimeter = 2 * Math.PI * 44; // ~276.46
+      const offset = perimeter - (timeLeft / timerTotal) * perimeter;
+      circle.style.strokeDashoffset = offset;
+
+      if (timeLeft <= 5) {
+        circle.className = "text-rose-500 transition-all duration-300";
+        document.getElementById('timer-display').classList.add('text-rose-600');
+      } else {
+        circle.className = "text-emerald-500 transition-all duration-300";
+        document.getElementById('timer-display').classList.remove('text-rose-600');
+      }
+    }
+
+    function openDemoModal() {
+      openModal('demo-modal');
+    }
+
+    function loadDemoDataset() {
+      students = JSON.parse(JSON.stringify(DEMO_STUDENTS));
+      renderAll();
+      closeModal('demo-modal');
+      playSound('submit');
+      confetti({ particleCount: 60, spread: 60 });
+      showToast('已載入 8 位六年級示範學生名單！', '🚀');
+    }
+
+    function clearAllData() {
+      students = [];
+      renderAll();
+      closeModal('demo-modal');
+      showToast('已清空所有資料', '🧹');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      document.getElementById(id).classList.add('flex');
+      lucide.createIcons();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+      document.getElementById(id).classList.remove('flex');
+      if (id === 'timer-modal') {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+      }
+    }
+
+    function showToast(msg, icon = '🎉') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      document.getElementById('toast-icon').textContent = icon;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+
+    // Initialize application on DOM ready
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      updateEnergyVisual(75);
+      updateHighlightPlaceholder();
+      loadDemoDataset();
+    });
+  </script>
+</body>
+</html>
