@@ -1,117 +1,49 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="國小六年級社會課：早餐店危機三輪互動經營挑戰" />
-  <title>早餐店危機｜三輪經營挑戰</title>
-  <style>
-    :root{
-      --bg:#f7f4ee;--card:#ffffff;--panel:#fff9ed;--text:#2d2926;--muted:#6f6861;
-      --border:#ded7cf;--accent:#b85c38;--accent-dark:#91452a;--good:#2f7d5c;--warn:#a06a1b;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.6}
-    button,textarea,input{font:inherit}
-    button{cursor:pointer}
-    .wrap{width:min(960px,calc(100% - 28px));margin:28px auto 56px}
-    .hero,.card,.panel,.result,.summary-card{border:1px solid var(--border);border-radius:20px;background:var(--card)}
-    .hero{padding:24px}.hero-top{display:flex;gap:18px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
-    .eyebrow{font-size:.86rem;color:var(--muted);margin:0}.hero h1{font-size:clamp(1.55rem,4vw,2.25rem);margin:.15rem 0 .5rem;line-height:1.25}.hero p{margin:.25rem 0;color:var(--muted)}
-    .progress{padding:10px 14px;border:1px solid var(--border);border-radius:14px;background:var(--panel);font-weight:700;white-space:nowrap}
-    .scores{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}.score{background:var(--card);border:1px solid var(--border);border-radius:16px;text-align:center;padding:14px}.score small{color:var(--muted)}.score strong{display:block;font-size:1.4rem;margin-top:2px}
-    .panel{padding:22px;background:var(--panel)}.event-head{display:flex;gap:10px;align-items:center}.event-icon{font-size:2rem}.panel h2{margin:0;font-size:1.35rem}.panel .event-text{margin:12px 0 0}
-    .prompt{margin-top:16px;padding:14px 16px;border-radius:14px;background:var(--card);border:1px solid var(--border)}.prompt strong{display:block;margin-bottom:3px}.prompt p{margin:0;color:var(--muted)}
-    form{margin-top:18px}.section-title{font-weight:800;margin:0 0 10px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.choice{display:block;border:1px solid var(--border);background:var(--card);border-radius:16px;padding:16px;cursor:pointer;transition:.15s}.choice:hover{border-color:#b7aaa0}.choice:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 3px rgba(184,92,56,.12)}.choice-line{display:flex;align-items:flex-start;gap:10px}.choice input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent)}.choice b{display:block}.choice small{display:block;margin-top:7px;color:var(--muted);line-height:1.55}
-    .reason{margin-top:14px;padding:16px;border:1px solid var(--border);border-radius:16px;background:var(--card)}.reason label{font-weight:800}.reason small{display:block;color:var(--muted);margin-top:2px}.reason textarea{width:100%;min-height:82px;margin-top:10px;border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff;color:var(--text);resize:vertical}.reason textarea:focus{outline:3px solid rgba(184,92,56,.15);border-color:var(--accent)}
-    .error{margin-top:12px;border:1px solid #d4a29a;background:#fff5f3;color:#7e3327;border-radius:12px;padding:10px 12px}.hidden{display:none!important}
-    .primary,.secondary{width:100%;min-height:48px;border-radius:14px;padding:11px 16px;font-weight:800;margin-top:14px}.primary{border:0;background:var(--accent);color:#fff}.primary:hover{background:var(--accent-dark)}.secondary{border:1px solid var(--border);background:var(--card);color:var(--text)}
-    .result{padding:22px;margin-top:18px}.result h2{margin:.15rem 0}.result>p{margin:.3rem 0}.reactions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.reaction{background:var(--panel);border-radius:14px;padding:14px}.reaction b{display:block}.reaction p{font-size:.93rem;color:var(--muted);margin:5px 0 0}
-    .summary{margin-top:18px}.summary-card{padding:22px}.summary-card h2{margin:0 0 7px}.log{display:grid;gap:10px;margin-top:12px}.log-item{border:1px solid var(--border);background:var(--card);border-radius:14px;padding:14px}.log-item p{margin:3px 0}.discussion{margin-top:14px;padding:18px;border-radius:16px;border:1px solid var(--border);background:var(--panel)}.discussion h3{margin:0 0 8px}.discussion ol{margin:0;padding-left:1.3rem}.footer{margin-top:22px;text-align:center;color:var(--muted);font-size:.82rem}
-    @media(max-width:720px){.choices,.reactions{grid-template-columns:1fr}.scores{gap:7px}.score{padding:11px 6px}.score small{font-size:.75rem}.wrap{margin-top:14px}.hero,.panel,.result,.summary-card{padding:18px}}
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="國小六年級社會課：早餐店危機三輪互動經營挑戰"><title>早餐店危機｜三輪經營挑戰</title>
+<style>
+:root{--bg:#f7f4ee;--card:#fff;--panel:#fff9ed;--text:#2d2926;--muted:#6f6861;--border:#ded7cf;--accent:#b85c38;--accent2:#e8b36a;--good:#2f7d5c;--bad:#b54b46}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.6}.wrap{width:min(980px,calc(100% - 28px));margin:24px auto 56px}button,textarea,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}.card,.hero,.panel,.result,.summary-card,.type-card{border:1px solid var(--border);border-radius:20px;background:var(--card)}.hero{padding:24px}.hero-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}.eyebrow{font-size:.84rem;color:var(--muted);margin:0}.hero h1{margin:.2rem 0 .5rem;font-size:clamp(1.6rem,4vw,2.35rem);line-height:1.2}.hero p{margin:.25rem 0;color:var(--muted)}.progress{padding:10px 14px;border:1px solid var(--border);border-radius:14px;background:var(--panel);font-weight:800}.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}.score{border:1px solid var(--border);border-radius:16px;background:var(--card);padding:14px;text-align:center;transition:.25s}.score small{color:var(--muted)}.score strong{display:block;font-size:1.45rem}.score.pop{animation:pop .45s ease}.panel{padding:22px;background:var(--panel)}.event-head{display:flex;gap:10px;align-items:center}.event-icon{font-size:2rem}.panel h2{margin:0}.prompt{margin-top:14px;padding:14px;border:1px solid var(--border);border-radius:14px;background:var(--card)}.timer-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}.timer{font-size:1.35rem;font-weight:900;min-width:78px}.timer.danger{color:var(--bad);animation:pulse 1s infinite}.timer-btn{border:1px solid var(--border);border-radius:12px;background:var(--card);padding:9px 13px;font-weight:700}.avatars{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}.avatar{border:1px solid var(--border);border-radius:14px;background:var(--card);padding:12px;display:flex;align-items:center;gap:10px}.face{font-size:2rem;transition:transform .25s}.face.bump{animation:bump .5s ease}.avatar p{margin:0;font-size:.9rem;color:var(--muted)}form{margin-top:18px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.choice{display:block;border:1px solid var(--border);border-radius:16px;background:var(--card);padding:16px;transition:.18s}.choice:hover{border-color:#b7aaa0}.choice:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 3px rgba(184,92,56,.12)}.choice-line{display:flex;gap:10px}.choice input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent)}.choice small{display:block;margin-top:7px;color:var(--muted)}.reason{margin-top:14px;padding:16px;border:1px solid var(--border);border-radius:16px;background:var(--card)}.reason label{font-weight:800}.reason small{display:block;color:var(--muted)}textarea{width:100%;min-height:82px;margin-top:10px;border:1px solid var(--border);border-radius:12px;padding:12px;resize:vertical;background:#fff}.error{margin-top:12px;border:1px solid #d9a6a0;background:#fff4f2;color:#7c3027;border-radius:12px;padding:10px 12px}.primary,.secondary{width:100%;min-height:48px;border-radius:14px;padding:12px 16px;font-weight:800;margin-top:14px}.primary{border:0;background:var(--accent);color:#fff}.secondary{border:1px solid var(--border);background:var(--card);color:var(--text)}.reveal{position:relative;overflow:hidden}.reveal::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);transform:translateX(-120%);animation:sweep .9s ease}.result{padding:22px;margin-top:18px;animation:revealIn .5s ease}.impact{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.chip{border-radius:999px;padding:6px 10px;font-size:.85rem;font-weight:800;background:var(--panel);border:1px solid var(--border)}.reactions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.reaction{background:var(--panel);border-radius:14px;padding:14px}.reaction p{margin:4px 0 0;color:var(--muted);font-size:.93rem}.summary{margin-top:18px}.summary-card,.type-card{padding:22px}.type-card{margin-bottom:14px;background:linear-gradient(135deg,#fff9ed,#fff)}.type-emoji{font-size:3.4rem;line-height:1}.type-card h2{font-size:1.7rem;margin:.2rem 0}.type-tag{display:inline-block;margin-top:4px;border-radius:999px;padding:6px 10px;background:var(--panel);border:1px solid var(--border);font-weight:800}.bars{display:grid;gap:8px;margin-top:14px}.bar-row{display:grid;grid-template-columns:85px 1fr 44px;gap:8px;align-items:center;font-size:.9rem}.track{height:10px;border-radius:999px;background:#eee6dc;overflow:hidden}.fill{height:100%;background:var(--accent);border-radius:999px}.log{display:grid;gap:10px;margin-top:12px}.log-item{border:1px solid var(--border);background:var(--card);border-radius:14px;padding:14px}.log-item p{margin:3px 0}.discussion{margin-top:14px;padding:18px;border-radius:16px;border:1px solid var(--border);background:var(--panel)}.footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:22px}
+@keyframes revealIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}@keyframes sweep{to{transform:translateX(120%)}}@keyframes pop{50%{transform:scale(1.06)}}@keyframes bump{50%{transform:scale(1.25) rotate(-4deg)}}@keyframes pulse{50%{opacity:.45}}@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}@media(max-width:720px){.choices,.reactions{grid-template-columns:1fr}.avatars{grid-template-columns:1fr}.scores{gap:7px}.score{padding:10px 5px}.score small{font-size:.74rem}.wrap{margin-top:14px}.hero,.panel,.result,.summary-card,.type-card{padding:18px}.bar-row{grid-template-columns:72px 1fr 36px}}
+</style>
 </head>
-<body>
-<main class="wrap" id="app">
-  <section class="hero">
-    <div class="hero-top">
-      <div>
-        <p class="eyebrow">國小六年級｜小組互動體驗</p>
-        <h1>🥪 早餐店危機：三輪經營挑戰</h1>
-        <p>三輪危機、三次抉擇。每輪先討論，再做決定。</p>
-        <p>沒有完美答案，重點是觀察：<strong>老闆的選擇，會怎麼影響員工和顧客？</strong></p>
-      </div>
-      <div class="progress" id="roundBadge">第 1 / 3 輪</div>
-    </div>
-  </section>
-
-  <section class="scores" aria-label="早餐店目前狀態">
-    <div class="score"><small>💰 店家資金</small><strong id="money">60</strong></div>
-    <div class="score"><small>🙂 員工心情</small><strong id="staff">60</strong></div>
-    <div class="score"><small>❤️ 顧客好感</small><strong id="customer">60</strong></div>
-  </section>
-
-  <section class="panel">
-    <div class="event-head"><span class="event-icon" id="eventIcon">🥚</span><div><p class="eyebrow">本輪突發事件</p><h2 id="eventTitle"></h2></div></div>
-    <p class="event-text" id="eventText"></p>
-    <div class="prompt"><strong>討論 60 秒：</strong><p id="discussionPrompt"></p></div>
-  </section>
-
-  <form id="decisionForm">
-    <p class="section-title">小組決定怎麼做？</p>
-    <div class="choices" id="choices"></div>
-    <div class="reason">
-      <label for="reason">✏️ 記下你們的抉擇理由</label>
-      <small>不用寫很長，一句話就可以，例如：「我們怕客人跑掉，所以……」</small>
-      <textarea id="reason" maxlength="160" placeholder="我們選這個方法，因為……"></textarea>
-    </div>
-    <div class="error hidden" id="validation" role="alert"></div>
-    <button class="primary" id="submitDecision" type="submit">送出第 1 輪決定</button>
-  </form>
-
-  <section class="result hidden" id="resultPanel" aria-live="polite">
-    <p class="eyebrow">決策結果</p><h2 id="resultTitle"></h2><p id="resultText"></p>
-    <div class="reactions">
-      <div class="reaction"><b>👔 老闆</b><p id="bossReaction"></p></div>
-      <div class="reaction"><b>🧑‍🍳 員工</b><p id="staffReaction"></p></div>
-      <div class="reaction"><b>🥪 顧客</b><p id="customerReaction"></p></div>
-    </div>
-    <button class="secondary" id="nextRound" type="button">進入第 2 輪 →</button>
-  </section>
-
-  <section class="summary hidden" id="summaryPanel">
-    <div class="summary-card"><p class="eyebrow">挑戰完成</p><h2>🎉 你們的早餐店活過三輪危機了！</h2><p id="endingText"></p></div>
-    <div class="summary-card" style="margin-top:12px"><h2>📋 三輪決策紀錄</h2><div class="log" id="decisionLog"></div></div>
-    <div class="discussion"><h3>最後討論</h3><ol><li>哪一輪最難決定？為什麼？</li><li>哪一次決定對員工影響最大？</li><li>有沒有一個方法「老闆喜歡，但員工或顧客不一定喜歡」？</li><li>所以，經營一家店只考慮「賺錢」就夠了嗎？</li></ol></div>
-    <button class="primary" id="restart" type="button">重新挑戰</button>
-  </section>
-  <p class="footer">課堂用途：消費者選擇、生產者經營與不同角色觀點</p>
-</main>
-
+<body><main class="wrap" id="app">
+<section class="hero"><div class="hero-top"><div><p class="eyebrow">國小六年級｜小組互動體驗</p><h1>🥪 早餐店危機：三輪經營挑戰</h1><p>三輪危機、三次抉擇。每輪有 60 秒討論時間，再做決定。</p><p>重點不是找標準答案，而是看見：<strong>老闆的選擇，會怎麼影響員工和顧客？</strong></p></div><div class="progress" id="roundBadge">第 1 / 3 輪</div></div></section>
+<section class="scores"><div class="score" id="moneyCard"><small>💰 店家資金</small><strong id="money">60</strong></div><div class="score" id="staffCard"><small>🙂 員工心情</small><strong id="staff">60</strong></div><div class="score" id="customerCard"><small>❤️ 顧客好感</small><strong id="customer">60</strong></div></section>
+<section class="panel"><div class="event-head"><span class="event-icon" id="eventIcon">🥚</span><div><p class="eyebrow">本輪突發事件</p><h2 id="eventTitle"></h2></div></div><p id="eventText"></p><div class="prompt"><strong>討論題：</strong><p id="discussionPrompt"></p><div class="timer-row"><span class="timer" id="timer" aria-live="polite">60 秒</span><button type="button" class="timer-btn" id="timerBtn">▶ 開始 60 秒討論</button><button type="button" class="timer-btn" id="resetTimer">↻ 重設</button></div></div><div class="avatars"><div class="avatar"><span class="face" id="bossFace">😐</span><div><strong>老闆現在的心情</strong><p id="bossMood">壓力普通，正在觀察情況。</p></div></div><div class="avatar"><span class="face" id="staffFace">🙂</span><div><strong>員工現在的心情</strong><p id="staffMood">工作還算順利。</p></div></div></div></section>
+<form id="decisionForm"><p><strong>小組決定怎麼做？</strong></p><div class="choices" id="choices"></div><div class="reason"><label for="reason">✏️ 記下你們的抉擇理由</label><small>一句話就可以，例如：「我們怕客人跑掉，所以……」</small><textarea id="reason" maxlength="160" placeholder="我們選這個方法，因為……"></textarea></div><div class="error hidden" id="validation" role="alert"></div><button class="primary" id="submitDecision" type="submit">送出第 1 輪決定</button></form>
+<section class="result hidden" id="resultPanel" aria-live="polite"><p class="eyebrow">🎬 決策揭曉</p><h2 id="resultTitle"></h2><div class="impact" id="impact"></div><p id="resultText"></p><div class="reactions"><div class="reaction"><b>👔 老闆</b><p id="bossReaction"></p></div><div class="reaction"><b>🧑‍🍳 員工</b><p id="staffReaction"></p></div><div class="reaction"><b>🥪 顧客</b><p id="customerReaction"></p></div></div><button class="secondary" id="nextRound" type="button">進入第 2 輪 →</button></section>
+<section class="summary hidden" id="summaryPanel"><div class="type-card" id="typeCard"><p class="eyebrow">🏆 你們是哪一型早餐店老闆？</p><div class="type-emoji" id="typeEmoji">⚖️</div><h2 id="typeTitle"></h2><span class="type-tag" id="typeTag"></span><p id="typeText"></p><div class="bars"><div class="bar-row"><span>店家資金</span><div class="track"><div class="fill" id="barMoney"></div></div><strong id="finalMoney"></strong></div><div class="bar-row"><span>員工心情</span><div class="track"><div class="fill" id="barStaff"></div></div><strong id="finalStaff"></strong></div><div class="bar-row"><span>顧客好感</span><div class="track"><div class="fill" id="barCustomer"></div></div><strong id="finalCustomer"></strong></div></div></div><div class="summary-card"><h2>📋 三輪決策紀錄</h2><div class="log" id="decisionLog"></div></div><div class="discussion"><h3>最後討論</h3><ol><li>哪一輪最難決定？為什麼？</li><li>哪一次決定對員工影響最大？</li><li>有沒有一個方法「老闆喜歡，但員工或顧客不一定喜歡」？</li><li>所以，經營一家店只考慮「賺錢」就夠了嗎？</li></ol></div><button class="primary" id="restart" type="button">重新挑戰</button></section>
+<p class="footer">課堂用途：消費者選擇、生產者經營與不同角色觀點</p></main>
 <script>
 const rounds=[
- {icon:'🥚',title:'雞蛋漲價了！',text:'每顆蛋的成本上漲 5 元。如果價格不變，店裡會少賺；如果漲價，又可能讓顧客不開心。',prompt:'如果你是老闆，你最擔心什麼？如果你是每天早上很忙的員工，你希望老闆怎麼做？',choices:[
-  {name:'蛋料理全部漲 5 元',delta:{money:12,staff:0,customer:-12},result:'收入比較穩定，但有些顧客看到價格後轉身離開。',boss:'成本壓力降低，終於不用每賣一份就心痛。',staff:'工作方式差不多，但開始遇到顧客抱怨價格。',customer:'有人可以接受，也有人覺得早餐變太貴。'},
-  {name:'價格先不變，店家吸收成本',delta:{money:-14,staff:2,customer:10},result:'客人很開心，但店裡每賣一份蛋料理，利潤都變少。',boss:'看到客人留下來很安心，但開始擔心月底能不能付帳單。',staff:'比較少遇到客人抱怨，但知道老闆的壓力正在增加。',customer:'覺得這家店很佛心，更願意繼續購買。'},
-  {name:'推出「少蛋、多蔬菜」新套餐',delta:{money:5,staff:-5,customer:3},result:'成本稍微控制住了，但員工得重新學新的備料方式。',boss:'找到不用直接漲價的折衷方法。',staff:'要重新備料、記新流程，前幾天會比較手忙腳亂。',customer:'部分人喜歡新選擇，也有人還是只想吃原本的蛋餅。'}]},
- {icon:'🥤',title:'隔壁店出招：套餐送飲料！',text:'隔壁早餐店推出「買套餐送飲料」，這幾天你們的客人明顯變少。你們沒有足夠資源什麼都做，只能選一種對策。',prompt:'如果跟著降價，店家可能賺更少；如果什麼都不做，客人可能繼續流失。你們願意犧牲什麼？',choices:[
-  {name:'也推出超值優惠套餐',delta:{money:-6,staff:-5,customer:15},result:'客人明顯回流，但每份餐點賺得比較少，尖峰時間也更忙。',boss:'客人回來了，但開始擔心「一直打折真的撐得久嗎？」',staff:'訂單突然變多，忙到幾乎沒時間喝水。',customer:'覺得划算，很多人願意再回來消費。'},
-  {name:'買自動炸物機，加快出餐',delta:{money:-15,staff:13,customer:7},result:'一開始花了一筆錢，但炸物出餐速度變快，員工也少了一項重複工作。',boss:'設備很貴，但長期可能省時間、提高效率。',staff:'不用一直顧炸鍋，工作稍微輕鬆，也比較安全。',customer:'優惠沒有隔壁多，但不用等那麼久。'},
-  {name:'不跟促銷，強調品質',delta:{money:4,staff:4,customer:-7},result:'沒有額外成本，但部分追求便宜的客人真的去了隔壁。',boss:'成本控制住了，但必須接受短期客人減少。',staff:'工作量沒有暴增，可以維持原本品質。',customer:'重視品質的人留下，但想省錢的人容易被隔壁吸引。'}]},
- {icon:'⏰',title:'附近開始流行「早午餐」',text:'越來越多人週末睡晚一點，10 點以後才想吃早餐。老闆考慮延長營業時間，但員工原本中午就能下班。',prompt:'這一輪請特別站在員工角度想：增加營業時間只是「多賺一點」嗎？誰要付出更多時間？',choices:[
-  {name:'延長到下午 2 點，原員工一起加班',delta:{money:16,staff:-18,customer:12},result:'下午多了不少客人，但員工連續工作更久，疲累感明顯上升。',boss:'營業額增加，很想把早午餐做起來。',staff:'收入可能增加，但休息變少，會擔心長期撐不住。',customer:'睡晚了也吃得到，很方便。'},
-  {name:'延長營業，但多請一位兼職',delta:{money:5,staff:12,customer:11},result:'多了一筆人事費，但員工可以輪班，顧客也享受更長的營業時間。',boss:'賺得沒有全員加班多，但團隊比較穩定。',staff:'有人分擔工作，比較能接受延長營業。',customer:'營業時間變長，服務品質也沒有明顯下降。'},
-  {name:'維持原營業時間',delta:{money:-4,staff:10,customer:-8},result:'沒有增加人力負擔，但晚起床的客人只好去別家店。',boss:'風險較小，但可能錯過新的市場需求。',staff:'作息不變，生活比較穩定。',customer:'早起的人沒差，但週末晚起的人覺得不方便。'}]}
+{icon:'🥚',title:'雞蛋漲價了！',text:'每顆蛋的成本上漲 5 元。如果價格不變，店裡會少賺；如果漲價，又可能讓顧客不開心。',prompt:'如果你是老闆，你最擔心什麼？如果你是每天早上很忙的員工，你希望老闆怎麼做？',choices:[
+{name:'蛋料理全部漲 5 元',delta:{money:12,staff:0,customer:-12},result:'收入比較穩定，但有些顧客看到價格後轉身離開。',boss:'成本壓力降低，終於不用每賣一份就心痛。',staff:'工作方式差不多，但開始遇到顧客抱怨價格。',customer:'有人可以接受，也有人覺得早餐變太貴。'},
+{name:'價格先不變，店家吸收成本',delta:{money:-14,staff:2,customer:10},result:'客人很開心，但店裡每賣一份蛋料理，利潤都變少。',boss:'看到客人留下來很安心，但開始擔心月底能不能付帳單。',staff:'比較少遇到客人抱怨，但知道老闆的壓力正在增加。',customer:'覺得這家店很佛心，更願意繼續購買。'},
+{name:'推出「少蛋、多蔬菜」新套餐',delta:{money:5,staff:-5,customer:3},result:'成本稍微控制住了，但員工得重新學新的備料方式。',boss:'找到不用直接漲價的折衷方法。',staff:'要重新備料、記新流程，前幾天會比較手忙腳亂。',customer:'部分人喜歡新選擇，也有人還是只想吃原本的蛋餅。'}]},
+{icon:'🥤',title:'隔壁店出招：套餐送飲料！',text:'隔壁早餐店推出「買套餐送飲料」，這幾天你們的客人明顯變少。你們沒有足夠資源什麼都做，只能選一種對策。',prompt:'如果跟著降價，店家可能賺更少；如果什麼都不做，客人可能繼續流失。你們願意犧牲什麼？',choices:[
+{name:'也推出超值優惠套餐',delta:{money:-6,staff:-5,customer:15},result:'客人明顯回流，但每份餐點賺得比較少，尖峰時間也更忙。',boss:'客人回來了，但開始擔心「一直打折真的撐得久嗎？」',staff:'訂單突然變多，忙到幾乎沒時間喝水。',customer:'覺得划算，很多人願意再回來消費。'},
+{name:'買自動炸物機，加快出餐',delta:{money:-15,staff:13,customer:7},result:'一開始花了一筆錢，但炸物出餐速度變快，員工也少了一項重複工作。',boss:'設備很貴，但長期可能省時間、提高效率。',staff:'不用一直顧炸鍋，工作稍微輕鬆，也比較安全。',customer:'優惠沒有隔壁多，但不用等那麼久。'},
+{name:'不跟促銷，強調品質',delta:{money:4,staff:4,customer:-7},result:'沒有額外成本，但部分追求便宜的客人真的去了隔壁。',boss:'成本控制住了，但必須接受短期客人減少。',staff:'工作量沒有暴增，可以維持原本品質。',customer:'重視品質的人留下，但想省錢的人容易被隔壁吸引。'}]},
+{icon:'⏰',title:'附近開始流行「早午餐」',text:'越來越多人週末睡晚一點，10 點以後才想吃早餐。老闆考慮延長營業時間，但員工原本中午就能下班。',prompt:'這一輪請特別站在員工角度想：增加營業時間只是「多賺一點」嗎？誰要付出更多時間？',choices:[
+{name:'延長到下午 2 點，原員工一起加班',delta:{money:16,staff:-18,customer:12},result:'下午多了不少客人，但員工連續工作更久，疲累感明顯上升。',boss:'營業額增加，很想把早午餐做起來。',staff:'收入可能增加，但休息變少，會擔心長期撐不住。',customer:'睡晚了也吃得到，很方便。'},
+{name:'延長營業，但多請一位兼職',delta:{money:5,staff:12,customer:11},result:'多了一筆人事費，但員工可以輪班，顧客也享受更長的營業時間。',boss:'賺得沒有全員加班多，但團隊比較穩定。',staff:'有人分擔工作，比較能接受延長營業。',customer:'營業時間變長，服務品質也沒有明顯下降。'},
+{name:'維持原營業時間',delta:{money:-4,staff:10,customer:-8},result:'沒有增加人力負擔，但晚起床的客人只好去別家店。',boss:'風險較小，但可能錯過新的市場需求。',staff:'作息不變，生活比較穩定。',customer:'早起的人沒差，但週末晚起的人覺得不方便。'}]}
 ];
-let round=0,scores={money:60,staff:60,customer:60},log=[];
-const $=s=>document.querySelector(s),clamp=n=>Math.max(0,Math.min(100,n));
-function updateScores(){ $('#money').textContent=scores.money;$('#staff').textContent=scores.staff;$('#customer').textContent=scores.customer; }
-function renderRound(){const r=rounds[round];$('#roundBadge').textContent=`第 ${round+1} / 3 輪`;$('#eventIcon').textContent=r.icon;$('#eventTitle').textContent=r.title;$('#eventText').textContent=r.text;$('#discussionPrompt').textContent=r.prompt;$('#reason').value='';$('#validation').classList.add('hidden');$('#resultPanel').classList.add('hidden');$('#decisionForm').classList.remove('hidden');$('#summaryPanel').classList.add('hidden');$('#submitDecision').textContent=`送出第 ${round+1} 輪決定`;$('#choices').innerHTML='';r.choices.forEach((c,i)=>{const label=document.createElement('label');label.className='choice';label.innerHTML=`<div class="choice-line"><input type="radio" name="choice" value="${i}"><div><b>${c.name}</b><small>選之前先說：這個方法可能讓誰最開心？又可能讓誰最辛苦？</small></div></div>`;$('#choices').appendChild(label)});updateScores();}
-$('#decisionForm').addEventListener('submit',e=>{e.preventDefault();const checked=document.querySelector('input[name="choice"]:checked'),reason=$('#reason').value.trim();if(!checked||!reason){$('#validation').textContent=!checked?'請先選一個小組決定。':'請至少寫一句你們選這個方法的理由。';$('#validation').classList.remove('hidden');return;}const c=rounds[round].choices[Number(checked.value)];Object.keys(scores).forEach(k=>scores[k]=clamp(scores[k]+c.delta[k]));log.push({round:round+1,event:rounds[round].title,choice:c.name,reason});updateScores();$('#resultTitle').textContent=`你們選擇：${c.name}`;$('#resultText').textContent=c.result;$('#bossReaction').textContent=c.boss;$('#staffReaction').textContent=c.staff;$('#customerReaction').textContent=c.customer;$('#decisionForm').classList.add('hidden');$('#resultPanel').classList.remove('hidden');$('#nextRound').textContent=round<2?`進入第 ${round+2} 輪 →`:'查看三輪總結 →';window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});});
-$('#nextRound').addEventListener('click',()=>{if(round<2){round++;renderRound();window.scrollTo({top:0,behavior:'smooth'})}else showSummary();});
-function showSummary(){$('#resultPanel').classList.add('hidden');$('#summaryPanel').classList.remove('hidden');const lowest=Object.entries(scores).sort((a,b)=>a[1]-b[1])[0][0];const messages={money:'你們很照顧員工與顧客，但店家的資金壓力最大。這就是老闆常面對的難題：大家都滿意，不一定代表生意撐得下去。',staff:'你們的店有生意、客人也不少，但員工承受了最大的代價。經營決策除了收入，也會改變真實的工作負擔。',customer:'你們成功守住店家與員工狀態，但顧客好感最低。顧客的選擇會反過來影響店家的下一步。'};$('#endingText').textContent=messages[lowest];$('#decisionLog').innerHTML='';log.forEach(item=>{const div=document.createElement('div');div.className='log-item';const p1=document.createElement('p'),p2=document.createElement('p'),p3=document.createElement('p');p1.innerHTML=`<strong>第 ${item.round} 輪｜${item.event}</strong>`;p2.innerHTML=`決定：<strong>${item.choice}</strong>`;p3.textContent=`理由：${item.reason}`;div.append(p1,p2,p3);$('#decisionLog').appendChild(div)});window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});}
-$('#restart').addEventListener('click',()=>{round=0;scores={money:60,staff:60,customer:60};log=[];renderRound();window.scrollTo({top:0,behavior:'smooth'});});
-renderRound();
-</script>
-</body>
-</html>
+let round=0,scores={money:60,staff:60,customer:60},log=[],seconds=60,timerId=null,running=false;const $=s=>document.querySelector(s),clamp=n=>Math.max(0,Math.min(100,n));
+function face(v){return v>=80?'😁':v>=65?'🙂':v>=50?'😐':v>=35?'😟':'😫'}
+function mood(kind,v){if(kind==='boss')return v>=75?'覺得店況穩定，開始有餘裕思考下一步。':v>=55?'有壓力，但目前還撐得住。':v>=40?'開始擔心成本和收入。':'壓力很大，覺得每個決定都很冒險。';return v>=75?'工作感受很好，覺得被照顧。':v>=55?'工作還算順利。':v>=40?'有點累，開始感受到決策帶來的負擔。':'非常疲累，覺得這樣長期做不下去。'}
+function updateScores(animate=false){$('#money').textContent=scores.money;$('#staff').textContent=scores.staff;$('#customer').textContent=scores.customer;$('#bossFace').textContent=face(scores.money);$('#staffFace').textContent=face(scores.staff);$('#bossMood').textContent=mood('boss',scores.money);$('#staffMood').textContent=mood('staff',scores.staff);if(animate){['moneyCard','staffCard','customerCard'].forEach(id=>{const el=$('#'+id);el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')});['bossFace','staffFace'].forEach(id=>{const el=$('#'+id);el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')})}}
+function stopTimer(){clearInterval(timerId);timerId=null;running=false;$('#timerBtn').textContent='▶ 繼續討論'}
+function resetTimer(){clearInterval(timerId);timerId=null;running=false;seconds=60;renderTimer();$('#timerBtn').textContent='▶ 開始 60 秒討論'}
+function renderTimer(){$('#timer').textContent=`${seconds} 秒`;$('#timer').classList.toggle('danger',seconds<=10)}
+$('#timerBtn').addEventListener('click',()=>{if(running){stopTimer();return}running=true;$('#timerBtn').textContent='⏸ 暫停';timerId=setInterval(()=>{seconds--;renderTimer();if(seconds<=0){clearInterval(timerId);timerId=null;running=false;$('#timerBtn').textContent='時間到！請做決定';$('#timer').textContent='時間到！'}},1000)});$('#resetTimer').addEventListener('click',resetTimer);
+function renderRound(){const r=rounds[round];resetTimer();$('#roundBadge').textContent=`第 ${round+1} / 3 輪`;$('#eventIcon').textContent=r.icon;$('#eventTitle').textContent=r.title;$('#eventText').textContent=r.text;$('#discussionPrompt').textContent=r.prompt;$('#reason').value='';$('#validation').classList.add('hidden');$('#resultPanel').classList.add('hidden');$('#decisionForm').classList.remove('hidden');$('#summaryPanel').classList.add('hidden');$('#submitDecision').textContent=`送出第 ${round+1} 輪決定`;$('#choices').innerHTML='';r.choices.forEach((c,i)=>{const label=document.createElement('label');label.className='choice';label.innerHTML=`<div class="choice-line"><input type="radio" name="choice" value="${i}"><div><b>${c.name}</b><small>先說說看：誰會最開心？誰可能最辛苦？</small></div></div>`;$('#choices').appendChild(label)});updateScores()}
+function deltaChip(label,v){const sign=v>0?'+':'';return `<span class="chip">${label} ${sign}${v}</span>`}
+$('#decisionForm').addEventListener('submit',e=>{e.preventDefault();const checked=document.querySelector('input[name="choice"]:checked'),reason=$('#reason').value.trim();if(!checked||!reason){$('#validation').textContent=!checked?'請先選一個小組決定。':'請至少寫一句你們選這個方法的理由。';$('#validation').classList.remove('hidden');return}stopTimer();const c=rounds[round].choices[Number(checked.value)];Object.keys(scores).forEach(k=>scores[k]=clamp(scores[k]+c.delta[k]));log.push({round:round+1,event:rounds[round].title,choice:c.name,reason});updateScores(true);$('#resultTitle').textContent=`你們選擇：${c.name}`;$('#impact').innerHTML=deltaChip('💰 資金',c.delta.money)+deltaChip('🙂 員工',c.delta.staff)+deltaChip('❤️ 顧客',c.delta.customer);$('#resultText').textContent=c.result;$('#bossReaction').textContent=c.boss;$('#staffReaction').textContent=c.staff;$('#customerReaction').textContent=c.customer;$('#decisionForm').classList.add('hidden');const rp=$('#resultPanel');rp.classList.remove('hidden','reveal');void rp.offsetWidth;rp.classList.add('reveal');$('#nextRound').textContent=round<2?`進入第 ${round+2} 輪 →`:'查看老闆類型 →';rp.scrollIntoView({behavior:'smooth',block:'start'})});
+$('#nextRound').addEventListener('click',()=>{if(round<2){round++;renderRound();window.scrollTo({top:0,behavior:'smooth'})}else showSummary()});
+function ownerType(){const vals=[scores.money,scores.staff,scores.customer],max=Math.max(...vals),min=Math.min(...vals),spread=max-min;if(spread<=12&&min>=55)return{emoji:'⚖️',title:'平衡型老闆',tag:'三方都顧型',text:'你們很努力在資金、員工與顧客之間找平衡。你們知道經營不是只看一個數字，而是每個選擇都會牽動不同的人。'};if(scores.staff===max)return{emoji:'🤝',title:'團隊照顧型老闆',tag:'員工感受優先',text:'你們特別在意員工能不能長久、安心地工作。這種做法可能增加成本，但有機會換來更穩定的團隊。'};if(scores.customer===max)return{emoji:'❤️',title:'顧客至上型老闆',tag:'需求敏感型',text:'你們很敏感地回應顧客需求，願意調整價格、服務或營業方式。不過也要留意：顧客滿意時，成本與員工負擔是不是仍然能承受？'};if(scores.money===max)return{emoji:'📈',title:'生存策略型老闆',tag:'財務穩健型',text:'你們做決定時很重視店家能不能撐下去。這是經營的重要條件，但也值得繼續思考：如果員工或顧客長期不滿，資金還能一直穩定嗎？'};return{emoji:'🧭',title:'彈性應變型老闆',tag:'看情勢調整型',text:'你們會依照每一輪的新情況調整策略，沒有死守同一套方法。這正是經營中常見的現實：條件一變，決策也要跟著變。'}}
+function showSummary(){$('#resultPanel').classList.add('hidden');$('#summaryPanel').classList.remove('hidden');const t=ownerType();$('#typeEmoji').textContent=t.emoji;$('#typeTitle').textContent=t.title;$('#typeTag').textContent=t.tag;$('#typeText').textContent=t.text;['money','staff','customer'].forEach(k=>{$('#final'+k[0].toUpperCase()+k.slice(1)).textContent=scores[k];$('#bar'+k[0].toUpperCase()+k.slice(1)).style.width=scores[k]+'%'});$('#decisionLog').innerHTML='';log.forEach(item=>{const div=document.createElement('div');div.className='log-item';const a=document.createElement('p'),b=document.createElement('p'),c=document.createElement('p');a.innerHTML=`<strong>第 ${item.round} 輪｜${item.event}</strong>`;b.innerHTML=`決定：<strong>${item.choice}</strong>`;c.textContent=`理由：${item.reason}`;div.append(a,b,c);$('#decisionLog').appendChild(div)});$('#summaryPanel').scrollIntoView({behavior:'smooth',block:'start'})}
+$('#restart').addEventListener('click',()=>{round=0;scores={money:60,staff:60,customer:60};log=[];renderRound();window.scrollTo({top:0,behavior:'smooth'})});renderRound();
+</script></body></html>
