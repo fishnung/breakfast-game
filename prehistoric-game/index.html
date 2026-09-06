@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>史前生存大冒險｜島嶼部落的萬年生存記</title>
+  <style>
+    :root{--bg:#f7f1e3;--ink:#2d342f;--muted:#6f766f;--card:#fffdf8;--line:#d8d2c4;--accent:#9b6b43;--accent2:#477a69;--life:#b85c4a;--tech:#4b6f97;--social:#8066a8;--shadow:0 10px 30px rgba(74,54,37,.12)}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC","PingFang TC",sans-serif;background:linear-gradient(#f7f1e3,#efe7d3);color:var(--ink)}
+    button,input{font:inherit} button{cursor:pointer} .wrap{max-width:980px;margin:auto;padding:20px}.top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}.brand{font-weight:900;font-size:clamp(24px,4vw,42px);letter-spacing:.02em}.tag{font-size:14px;color:var(--muted)}
+    .panel{background:rgba(255,253,248,.94);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}.hidden{display:none!important}
+    .hero{padding:28px}.hero p{font-size:18px;line-height:1.8}.namebox{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.namebox input{flex:1;min-width:220px;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:white}.primary{border:0;background:var(--accent2);color:white;border-radius:14px;padding:13px 18px;font-weight:800}.secondary{border:1px solid var(--line);background:white;border-radius:14px;padding:12px 16px;font-weight:700;color:var(--ink)}
+    .progress{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:18px 0}.step{height:9px;border-radius:99px;background:#ddd5c6}.step.on{background:var(--accent2)}
+    .stagehead{display:grid;grid-template-columns:90px 1fr;gap:16px;align-items:center}.icon{font-size:58px;text-align:center}.stagehead h2{margin:0 0 6px;font-size:clamp(25px,4vw,38px)}.stagehead p{margin:0;color:var(--muted)}
+    .story{margin:18px 0;padding:18px;border-left:5px solid var(--accent);background:#fbf5e8;border-radius:10px;line-height:1.8;font-size:17px}.rulestrip{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}.pill{padding:8px 11px;background:#eee7d9;border-radius:99px;font-size:14px;font-weight:800}
+    .choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.choice{position:relative;text-align:left;border:2px solid var(--line);background:white;border-radius:18px;padding:18px;min-height:172px;transition:.15s}.choice:hover{transform:translateY(-2px)}.choice.selected{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(71,122,105,.12)}.choice:disabled{opacity:.55;cursor:not-allowed;transform:none}.choice .letter{position:absolute;right:14px;top:12px;font-weight:900;color:#a19a8d}.choice h3{margin:0 28px 8px 0;font-size:20px}.choice p{margin:0 0 10px;color:var(--muted);line-height:1.55}.effect{font-size:14px;font-weight:800}.selectedcount{margin:15px 0;text-align:center;font-weight:800}.actions{text-align:center;margin-top:14px}.next{min-width:210px}
+    .badges{display:flex;gap:8px;flex-wrap:wrap}.badge{background:#f0eadf;border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:14px;font-weight:800}
+    .event-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.eventcard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.eventcard h3{margin-top:0}.event-option{display:block;width:100%;text-align:left;border:1px solid var(--line);background:#fffdfa;border-radius:12px;padding:12px;margin:8px 0}.event-option.chosen{border-color:var(--social);background:#f4effa}
+    .scoregrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.score{border-radius:18px;padding:16px;background:white;border:1px solid var(--line);text-align:center}.score strong{display:block;font-size:32px}.life strong{color:var(--life)}.tech strong{color:var(--tech)}.social strong{color:var(--social)}
+    .ending{background:#f8f1e1;border:1px dashed var(--accent);border-radius:18px;padding:18px;line-height:1.7}.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}.era{border-radius:16px;padding:14px;background:white;border:1px solid var(--line)}.era b{display:block;margin-bottom:6px}.era small{color:var(--muted)}
+    .reveal{margin-top:18px}.decode{margin-top:14px;border-top:1px solid var(--line);padding-top:16px}.decode h3{margin-bottom:6px}.decode ul{line-height:1.8}.question{padding:14px;border-radius:14px;background:#f5f0e6;margin:10px 0}.footer{font-size:13px;color:var(--muted);text-align:center;margin:18px 0 6px}.codebox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#2f332f;color:#fff;border-radius:12px;padding:12px;text-align:center;letter-spacing:.05em;font-size:15px;overflow:auto}
+    @media(max-width:700px){.choices,.event-grid,.scoregrid,.timeline{grid-template-columns:1fr}.stagehead{grid-template-columns:65px 1fr}.icon{font-size:45px}.panel{padding:17px}.wrap{padding:12px}.choice{min-height:0}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div><div class="brand">🏕️ 史前生存大冒險</div><div class="tag">島嶼部落的萬年生存記｜國小五年級體驗版</div></div><button id="restart" class="secondary hidden">重新開始</button></div>
+
+  <section id="start" class="panel hero">
+    <h1>你們就是史前人。</h1>
+    <p>沒有商店、沒有電、沒有冰箱。你們將跨越三個不同時期，每一關只有 <b>4 點人力</b>，四個行動只能選兩個。以前學會的技術，有些會影響後面的發展。</p>
+    <p><b>重要：</b>沒有唯一正確答案。先一起玩完，再和其他部落比較：為什麼大家最後會不一樣？</p>
+    <div class="namebox"><input id="tribeName" maxlength="18" placeholder="輸入你們的部落名稱，例如：海風部落"><button id="begin" class="primary">開始冒險</button></div>
+  </section>
+
+  <section id="game" class="hidden">
+    <div class="progress"><div class="step" data-step="1"></div><div class="step" data-step="2"></div><div class="step" data-step="3"></div><div class="step" data-step="4"></div><div class="step" data-step="5"></div></div>
+    <div id="stagePanel" class="panel"></div>
+  </section>
+
+  <section id="final" class="panel hidden"></section>
+  <div class="footer">遊戲將數千年的不同史前文化壓縮成三個體驗階段；並不代表同一個部落真的一路延續到十三行文化。</div>
+</div>
+<script>
+(()=>{
+  const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+  const state={tribe:'',stage:0,scores:{life:0,tech:0,social:0},badges:[],choices:[],culture:null};
+  const stages=[
+    {n:1,icon:'🌊',title:'海邊洞穴的生存挑戰',sub:'第一階段｜先想辦法活下來',story:'很久以前，你們住在臺灣東部靠海的洞穴附近。沒有農田、沒有商店，也沒有冰箱。海邊有魚蝦貝類，森林裡有植物和動物。天氣變冷了，你們要把有限的人力用在哪兩件事？',options:[
+      {id:'stone',letter:'A',title:'🪨 敲製石器',desc:'找堅硬石頭互相敲擊，做成有鋒利邊緣的工具。',effect:'🛠️ 技術 +2　🍖 生活 +1',score:{tech:2,life:1},badge:'打製石器'},
+      {id:'fire',letter:'B',title:'🔥 維持火源',desc:'找柴、生火、輪流顧火，可以取暖，也能烤食物。',effect:'🍖 生活 +2　🛠️ 技術 +1',score:{life:2,tech:1},badge:'用火'},
+      {id:'shore',letter:'C',title:'🐟 到海邊找食物',desc:'捕魚、撿貝類、採集海邊可取得的食物。',effect:'🍖 生活 +3',score:{life:3}},
+      {id:'hunt',letter:'D',title:'🐗 森林狩獵採集',desc:'合作追蹤動物，也採集可食用的植物。',effect:'🍖 生活 +2　👥 社會 +1',score:{life:2,social:1}}
+    ]},
+    {n:2,icon:'🌾',title:'平原上的新生活',sub:'第二階段｜讓食物與生活更穩定',story:'又過了很久。你們發現有些植物可以種在住家附近，也開始照顧動物。人們住得更固定，新的問題也出現了：如何取得更穩定的食物？怎麼保存東西？怎麼讓更多人一起生活？',options:[
+      {id:'farm',letter:'A',title:'🌾 農耕與飼養',desc:'整理土地、種植作物，也開始飼養動物。',effect:'🍖 生活 +3｜若已有打製石器，🛠️ 額外 +1',score:{life:3},badge:'農耕生活',bonus:s=>s.badges.includes('打製石器')?{tech:1}:null},
+      {id:'polish',letter:'B',title:'🪨 磨製石器',desc:'不只敲石頭，還花時間磨製，讓工具更適合生活與農耕。',effect:'🛠️ 技術 +2　🍖 生活 +1',score:{tech:2,life:1},badge:'磨製石器'},
+      {id:'pottery',letter:'C',title:'🏺 製作陶器',desc:'挖黏土、塑形，再用高溫燒硬，用來裝水、裝食物與保存物品。',effect:'🛠️ 技術 +2　🍖 生活 +1｜若已有用火，🛠️ 額外 +1',score:{tech:2,life:1},badge:'陶器',bonus:s=>s.badges.includes('用火')?{tech:1}:null},
+      {id:'settle',letter:'D',title:'🏘️ 建立固定聚落',desc:'大家合作蓋房屋、整理生活空間，讓更多人一起居住。',effect:'👥 社會 +2　🍖 生活 +1｜若已發展農耕，👥 額外 +1',score:{social:2,life:1},badge:'聚落',bonus:s=>s.badges.includes('農耕生活')?{social:1}:null}
+    ]},
+    {n:3,icon:'⚒️',title:'大聚落的新技術',sub:'第三階段｜提高生產與工具效率',story:'又過了很久，聚落已經更大。石頭工具雖然能用，但做大量農事很花力氣。這時，有人學會利用高溫處理金屬材料。你們要把人力投入哪兩件事？',options:[
+      {id:'iron',letter:'A',title:'🔥 研究高溫煉鐵',desc:'反覆嘗試爐火與材料，學習製作鐵器。',effect:'🛠️ 技術 +3',score:{tech:3},badge:'煉鐵技術'},
+      {id:'ironTools',letter:'B',title:'⛏️ 製作鐵製工具',desc:'嘗試做更耐用的工具，幫助農耕與日常工作。',effect:'🛠️ 技術 +2　🍖 生活 +1｜若已有煉鐵技術，🍖 額外 +2',score:{tech:2,life:1},badge:'鐵農具',bonus:s=>s.badges.includes('煉鐵技術')?{life:2}:null},
+      {id:'expandFarm',letter:'C',title:'🌾 擴大農業生產',desc:'投入更多人力耕作，增加聚落可取得的食物。',effect:'🍖 生活 +3｜若已有鐵農具，🍖 額外 +1',score:{life:3},bonus:s=>s.badges.includes('鐵農具')?{life:1}:null},
+      {id:'expandSettle',letter:'D',title:'🏘️ 擴大聚落',desc:'整理房屋與物資，安排更多人合作生活。',effect:'👥 社會 +2　🍖 生活 +1',score:{social:2,life:1}}
+    ]}
+  ];
+  const add=(obj)=>{if(!obj)return;Object.keys(obj).forEach(k=>state.scores[k]+=obj[k])};
+  function setStep(n){$$('.step').forEach((e,i)=>e.classList.toggle('on',i<n));}
+  function renderStage(index){state.stage=index+1;setStep(index+1);const s=stages[index];let selected=[];$('#stagePanel').innerHTML=`<div class="stagehead"><div class="icon">${s.icon}</div><div><h2>${s.title}</h2><p>${s.sub}｜${state.tribe}</p></div></div><div class="story">${s.story}</div><div class="rulestrip"><span class="pill">⚡ 4 點人力</span><span class="pill">每項 2 點</span><span class="pill">四選二</span></div><div class="choices">${s.options.map(o=>`<button class="choice" data-id="${o.id}"><span class="letter">${o.letter}</span><h3>${o.title}</h3><p>${o.desc}</p><div class="effect">${o.effect}</div></button>`).join('')}</div><div class="selectedcount">已選 <span id="count">0</span> / 2</div><div class="actions"><button id="confirm" class="primary next" disabled>確認這一關的決定</button></div>`;
+    $$('.choice').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.id;if(selected.includes(id)){selected=selected.filter(x=>x!==id);btn.classList.remove('selected')}else if(selected.length<2){selected.push(id);btn.classList.add('selected')}$('#count').textContent=selected.length;$('#confirm').disabled=selected.length!==2;}));
+    $('#confirm').addEventListener('click',()=>{selected.forEach(id=>{const o=s.options.find(x=>x.id===id);add(o.score);add(o.bonus?o.bonus(state):null);if(o.badge&&!state.badges.includes(o.badge))state.badges.push(o.badge)});state.choices.push({stage:s.n,ids:[...selected]});if(index===0)renderBridge(1);else if(index===1)renderCulture();else renderMystery();});
+  }
+  function renderBridge(nextIndex){setStep(nextIndex+1);$('#stagePanel').innerHTML=`<div class="stagehead"><div class="icon">⏳</div><div><h2>時間繼續往前走……</h2><p>以前學會的東西，會跟著你們進入下一階段。</p></div></div><div class="story">你們目前留下了這些能力與物品：</div><div class="badges">${state.badges.map(b=>`<span class="badge">✓ ${b}</span>`).join('')||'<span class="badge">還沒有技術物品</span>'}</div><div class="actions"><button id="goNext" class="primary next">進入下一階段</button></div>`;$('#goNext').addEventListener('click',()=>renderStage(nextIndex));}
+  function renderCulture(){setStep(3);$('#stagePanel').innerHTML=`<div class="stagehead"><div class="icon">🌙</div><div><h2>聚落文化事件：我們不只想活著</h2><p>這一題不花人力，也沒有唯一答案。</p></div></div><div class="story">聚落裡，有人花很多時間磨製漂亮的玉器；人們也會為過世的族人安排墓葬。這些事情不一定能直接增加食物。你們覺得，史前人為什麼還願意做？</div><div class="event-grid"><div class="eventcard"><h3>💎 精美玉器</h3><p>可能和美感、身分、交換、重要關係或特殊意義有關。</p></div><div class="eventcard"><h3>🪦 墓葬與石板棺</h3><p>可能和紀念死者、家族關係、儀式或信仰有關。</p></div></div><h3>你們最想提出哪一種推測？</h3>${['因為覺得漂亮，想裝飾自己','可能表示某種身分或重要性','可能和祖先、死亡、儀式或信仰有關','可能和送禮、交換或人際關係有關','以上都有可能，要看更多證據'].map((t,i)=>`<button class="event-option" data-v="${i}">${String.fromCharCode(65+i)}. ${t}</button>`).join('')}<div class="actions"><button id="cultureNext" class="primary next" disabled>記下推測，繼續冒險</button></div>`;
+    $$('.event-option').forEach(b=>b.addEventListener('click',()=>{$$('.event-option').forEach(x=>x.classList.remove('chosen'));b.classList.add('chosen');state.culture=Number(b.dataset.v);$('#cultureNext').disabled=false;}));
+    $('#cultureNext').addEventListener('click',()=>renderStage(2));
+  }
+  function renderMystery(){setStep(4);$('#stagePanel').innerHTML=`<div class="stagehead"><div class="icon">🧭</div><div><h2>神秘物品事件</h2><p>三關都完成了，但考古學家又發現兩件奇怪的事。</p></div></div><div class="event-grid"><div class="eventcard"><h3>💚 臺灣玉為什麼到處都有？</h3><p>花蓮出產的臺灣玉，卻在臺灣許多地方的史前遺址中出現。沒有網購、沒有貨車，它怎麼移動？</p><p><b>可能線索：不同聚落之間的交換。</b></p></div><div class="eventcard"><h3>🔵 十三行為什麼有東南亞琉璃珠？</h3><p>臺灣北部的遺址發現來自東南亞的琉璃珠；臺灣玉也曾出現在東南亞地區。</p><p><b>可能線索：航海與跨海交流。</b></p></div></div><div class="story">這表示史前人的世界不只是一個聚落。隨著生產、技術與聚落發展，人與人的交換可能越來越遠。</div><div class="actions"><button id="finish" class="primary next">查看我們部落的最終結果</button></div>`;$('#finish').addEventListener('click',renderFinal);}
+  function ending(){const s=state.scores;const max=Math.max(s.life,s.tech,s.social), winners=Object.keys(s).filter(k=>s[k]===max);if(winners.length>1)return['⚖️ 全能型部落','你們沒有把所有力量押在同一件事情上。生活、技術與社會文化都有發展，走出一條相對平衡的路線。'];if(winners[0]==='life')return['🌾 豐饒大聚落','你們最重視食物、生產與穩定生活，聚落很有生存韌性。'];if(winners[0]==='tech')return['⚒️ 技術開拓者','你們持續投入工具與製作技術，讓新的方法一代一代累積。'];return['🌊 社會文化交流者','你們特別重視合作、聚落關係、文化與交流，世界也因此越來越大。'];}
+  function resultCode(){return `${state.tribe｜'部落'}｜生活${state.scores.life}-技術${state.scores.tech}-社會${state.scores.social}｜${state.badges.join('、')}`}
+  function renderFinal(){setStep(5);$('#game').classList.add('hidden');$('#final').classList.remove('hidden');const e=ending();$('#final').innerHTML=`<h2>🏁 ${state.tribe} 的萬年生存記</h2><p>你們三個階段都完成了。現在先不要急著找「誰贏」，等所有部落玩完，再比較差異是怎麼累積出來的。</p><div class="scoregrid"><div class="score life">🍖 生存與生產<strong>${state.scores.life}</strong></div><div class="score tech">🛠️ 技術<strong>${state.scores.tech}</strong></div><div class="score social">👥 社會與文化<strong>${state.scores.social}</strong></div></div><div class="ending"><h3>${e[0]}</h3><p>${e[1]}</p></div><h3>你們留下的技術與生活痕跡</h3><div class="badges">${state.badges.map(b=>`<span class="badge">${b}</span>`).join('')}</div><h3>給老師看的結果代碼</h3><div class="codebox">${resultCode()}</div><div class="timeline"><div class="era"><b>🌊 第一階段</b><small>就地取材、打製石器、用火、採集狩獵</small></div><div class="era"><b>🌾 第二階段</b><small>農耕、磨製石器、陶器、聚落與文化</small></div><div class="era"><b>⚒️ 第三階段</b><small>煉鐵、鐵器、生產效率與更大的聚落</small></div></div><div class="reveal"><button id="decodeBtn" class="secondary">老師說可以後，再按「課本大解密」</button><div id="decode" class="decode hidden"><h2>📚 課本大解密</h2><h3>1. 舊石器時代・長濱文化</h3><ul><li>海濱洞穴生活</li><li>捕魚、採集、狩獵</li><li>已知用火</li><li>敲擊石頭製作打製石器</li></ul><h3>2. 新石器時代</h3><ul><li>農耕與飼養讓食物取得逐漸穩定</li><li>使用磨製石器與陶器</li><li>人口增加，形成聚落</li><li>精美玉器、墓葬等證據提醒我們：史前人的生活不只有吃飽，也包含美感、身分、關係、儀式與信仰的可能</li></ul><h3>3. 金屬器時代・十三行文化</h3><ul><li>學會煉鐵與製造鐵器</li><li>鐵製農具可提高農耕效率</li><li>外來琉璃珠等證據顯示更廣的交流</li></ul><h3>4. 交換與航海</h3><ul><li>臺灣玉出現在島內許多遺址，顯示聚落間有交換</li><li>十三行發現東南亞琉璃珠，臺灣玉也出現在東南亞，顯示跨海交流</li></ul><div class="question"><b>一起討論：</b>一開始三個部落都一樣，為什麼最後不同？哪一次選擇影響了後面？</div><div class="question"><b>考古提醒：</b>文物是證據；我們可以根據證據推測生活，但不能只靠一件文物就百分之百知道史前人在想什麼。</div></div></div>`;$('#decodeBtn').addEventListener('click',()=>{$('#decode').classList.remove('hidden');$('#decodeBtn').classList.add('hidden')});$('#restart').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+  $('#begin').addEventListener('click',()=>{const n=$('#tribeName').value.trim();if(!n){$('#tribeName').focus();return}state.tribe=n;$('#start').classList.add('hidden');$('#game').classList.remove('hidden');$('#restart').classList.remove('hidden');renderStage(0)});
+  $('#tribeName').addEventListener('keydown',e=>{if(e.key==='Enter')$('#begin').click()});
+  $('#restart').addEventListener('click',()=>{if(!confirm('確定要清除這次部落進度，重新開始嗎？'))return;location.reload()});
+})();
+</script>
+</body>
+</html>
